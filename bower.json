@@ -1,0 +1,21 @@
+{
+  "name": "datatables-responsivelist",
+  "version": "0.0.1",
+  "main": [
+    "css/responsiveList.dataTables.css",
+    "js/dataTables.responsiveList.js"
+  ],
+  "homepage": "https://github.com/shingos/datatables-responsivelist",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+	"jquery": ">=1.7.0",
+    "datatables": ">= 1.10.8"
+  }
+}

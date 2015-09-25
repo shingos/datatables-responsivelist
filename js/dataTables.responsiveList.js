@@ -31,11 +31,6 @@ var ResponsiveList = function(settings, opts) {
 
 	this.s = {
 		dt: new DataTable.Api(settings),
-    sortAscOption: '&#x25B2; %s',
-    sortDescOption: '&#x25BC; %s',
-    //sortAsc: '&#x25B4; %s',
-    //sortDesc: '&#x25BE; %s',
-    sortSelectClass: 'form-control input-sm'
 	};
 
 	if (this.s.dt.settings()[0].responsiveList) {
@@ -49,6 +44,14 @@ var ResponsiveList = function(settings, opts) {
 	this.c = $.extend(true, {}, ResponsiveList.defaults, DataTable.defaults.responsiveList, opts);
 	settings.responsiveList = this;
 
+	this.dom = {
+    table: null,
+    sortSelect: null
+  };
+
+  var dtSettings = this.s.dt.settings()[0];
+  dtSettings._colTitles = [];
+
 	this._constructor();
 };
 
@@ -61,63 +64,111 @@ $.extend(ResponsiveList.prototype, {
 
 		dt.settings()[0]._responsiveList = this;
 
-    var $table = $('table', dt.table().container()).addClass('dt-reslist');
+    this.dom.table = $('table', dt.table().container()).addClass('dt-reslist');
 
-    var $tableSortSelect = $('<select class="form-control input-sm" />')
-      .bind('change', function(e) {
+    this.dom.sortSelect = $('<select />')
+      .addClass(this.c.sortSelectClass)
+      .on('change', function(e) {
         var colidx = parseInt($(this).val(), 10);
         var colord = $('OPTION:selected', this).attr('data-order');
         dt.order([colidx, colord]).draw();
       })
     ;
 
-    var cols = 0, coltitles = [];
-    var order = dt.order();
-    if (Object.prototype.toString.call(order) !== '[object Array]') order = [];
+    var $thead = $('<thead class="dt-reslist-sort-select dt-reslist-none"><tr><th colspan="0"></th></tr></thead>');
+    $('th', $thead).eq(0).append(this.dom.sortSelect);
 
-    dt.columns().every(function (i) {
+    $('thead.dt-reslist-sort-select', this.dom.table).remove();
+    this.dom.table.prepend($thead);
+
+    self._initSortSelect();
+    self._drawTable();
+
+    dt.on('column-visibility.dt', function (e, settings, column, state) {
+      self._initSortSelect();
+    } );
+
+    dt.on('page.dt', function () {
+      self._drawTable();
+    } );
+
+    dt.on('draw.dt', function () {
+      self._drawTable();
+    } );
+
+    dt.on('order.dt', function () {
+      self._orderChanged();
+    } );
+	},
+
+	_orderChanged: function ()
+	{
+    var order = this.s.dt.order();
+    $('OPTION:selected', this.dom.sortSelect).prop('selected', false);
+    $('OPTION[value='+order[0][0]+'][data-order='+order[0][1]+']', this.dom.sortSelect).prop('selected', true);
+  },
+
+	_initSortSelect: function ()
+	{
+    var self = this;
+    var order = self.s.dt.order();
+    var dtSettings = self.s.dt.settings()[0];
+    dtSettings._colTitles = [];
+
+    $('thead.dt-reslist-sort-select tr th', this.dom.table)
+      .attr('colspan', this.s.dt.columns().visible().length)
+    ;
+    this.dom.sortSelect.empty();
+
+    this.s.dt.columns().every(function (i) {
       var col = this;
       if (!col.visible()) return;
 
       var label = $(col.header()).text();
-      coltitles.push(label);
+      dtSettings._colTitles.push(label);
 
     	var selasc = (order.length && order[0][0] == i && order[0][1] == 'asc') ? ' selected' : '';
     	var seldesc = (order.length && order[0][0] == i && order[0][1] == 'desc') ? ' selected' : '';
 
-    	$tableSortSelect
+    	self.dom.sortSelect
     		.append(
-    			$('<option '+selasc+' />').val(i).attr('data-col-index', i).attr('data-order', 'asc').html(self.s.sortAscOption.replace('%s', label))
+    			$('<option '+selasc+' />')
+            .val(i)
+            .attr('data-col-index', i)
+            .attr('data-order', 'asc')
+            .html(self.c.sortAscOption.replace('%s', label))
     		)
     		.append(
-    			$('<option '+seldesc+' />').val(i).attr('data-col-index', i).attr('data-order', 'desc').html(self.s.sortDescOption.replace('%s', label))
+    			$('<option '+seldesc+' />')
+            .val(i)
+            .attr('data-col-index', i)
+            .attr('data-order', 'desc')
+            .html(self.c.sortDescOption.replace('%s', label))
     		)
     	;
-
     } );
+  },
 
-    var $thead = $('<thead class="dt-reslist-sort-select dt-reslist-none"><tr><th colspan="'+cols+'"></th></tr></thead>');
-    $('th', $thead).eq(0).append($tableSortSelect);
+	_drawTable: function ()
+	{
+    var dtSettings = this.s.dt.settings()[0];
 
-    $('thead.dt-reslist-sort-select', $table).remove();
-    $table.prepend($thead);
-
-    $('tbody>tr', $table).each(function(r) {
+    $('tbody>tr', this.dom.table).each(function(r) {
       var $row = $(this);
       $('td, th', $row).each(function(c) {
-        $(this).attr('data-title', coltitles[c]);
+        $(this).attr('data-title', dtSettings._colTitles[c]);
       } );
     } );
+  }
 
-    dt.on('order.dt', function () {
-      var order = dt.order();
-      $('OPTION:selected', $tableSortSelect).prop('selected', false);
-      $('OPTION[value='+order[0][0]+'][data-order='+order[0][1]+']', $tableSortSelect).prop('selected', true);
-    } );
-	}
 } );
 
 ResponsiveList.defaults = {
+  sortAscOption: '&#x25B2; %s',
+  sortDescOption: '&#x25BC; %s',
+  //sortAsc: '&#x25B4; %s',
+  //sortDesc: '&#x25BE; %s',
+  sortSelectClass: ''
 };
 
 var Api = $.fn.dataTable.Api;

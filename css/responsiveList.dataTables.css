@@ -1,0 +1,119 @@
+
+@media (max-width: 767px) {
+	table.dt-reslist {
+		display: block;
+		border: 0;
+		overflow: hidden;
+	}
+
+	table.dt-reslist thead { margin: 0; display: none; }
+	table.dt-reslist tbody { margin: 0; display: block; border: 0; }
+	table.dt-reslist tfoot { margin: 0; display: none; }
+	table.dt-reslist tr { margin: 0; display: block; border: 0; padding: 4px; }
+	table.dt-reslist th { margin: 0; display: block; border: 0; white-space: normal!important; }
+	table.dt-reslist td { margin: 0; display: inline-block; border: 0; white-space: normal!important; }
+
+	table.dt-reslist.table>thead>tr>th,
+	table.dt-reslist.table>tbody>tr>th,
+	table.dt-reslist.table>tfoot>tr>th,
+	table.dt-reslist.table>thead>tr>td,
+	table.dt-reslist.table>tbody>tr>td,
+	table.dt-reslist.table>tfoot>tr>td {
+		margin: 0 !important;
+		padding: 4px 8px 2px 8px;
+		border: 0 !important;
+	}
+	table.dt-reslist.table-bordered>thead>tr>th,
+	table.dt-reslist.table-bordered>tbody>tr>th,
+	table.dt-reslist.table-bordered>tfoot>tr>th,
+	table.dt-reslist.table-bordered>thead>tr>td,
+	table.dt-reslist.table-bordered>tbody>tr>td,
+	table.dt-reslist.table-bordered>tfoot>tr>td {
+		border: 0;
+	}
+
+	table.dt-reslist.table-bordered {
+		border: 0;
+	}
+	table.dt-reslist.table-bordered tr {
+		border-bottom: 1px solid #ddd;
+	}
+	table.dt-reslist.row-border tr {
+		border-bottom: 1px solid #ddd;
+	}
+	table.dt-reslist.table-striped>tbody>tr:nth-child(odd) {
+		background-color: #f9f9f9;
+	}
+	table.dt-reslist.table-striped>tbody>tr:nth-child(odd)>td,
+	table.dt-reslist.table-striped>tbody>tr:nth-child(odd)>th {
+		background-color: transparent;
+	}
+
+	table.dt-reslist.table-hover>tbody>tr:hover,
+	table.dt-reslist.table-hover>tbody>tr:hover>td,
+	table.dt-reslist.table-hover>tbody>tr:hover>th {
+		background-color: #f5f5f5;
+	}
+	table.dt-reslist.table-hover>tbody>tr>td:hover,
+	table.dt-reslist.table-hover>tbody>tr>th:hover {
+		background-color: #f5f5f5;
+	}
+
+	table.dt-reslist.table-hover>tbody>tr>td.success:hover,
+	table.dt-reslist.table-hover>tbody>tr>th.success:hover,
+	table.dt-reslist.table-hover>tbody>tr>td.danger:hover,
+	table.dt-reslist.table-hover>tbody>tr>th.danger:hover,
+	table.dt-reslist.table-hover>tbody>tr>td.warning:hover,
+	table.dt-reslist.table-hover>tbody>tr>th.warning:hover {
+		background-color: transparent;
+	}
+
+	table.dt-reslist th[data-title]:before,
+    table.dt-reslist td[data-title]:before {
+		content: attr(data-title) ":\00A0";
+		font-weight: bold;
+    }
+    
+	table.dt-reslist .dt-reslist-none {
+		display: inline;
+	}
+	table.dt-reslist .dt-reslist-show {
+		display: none;
+	}
+	table.dt-reslist .icon {
+		margin-right: .6em;
+	}
+
+	.dt-reslist-pull-left { float: left !important; }
+	.dt-reslist-pull-right { float: right !important; }
+
+	.dt-reslist-block { display: block !important; }
+	.dt-reslist-inline-block { display: inline-block !important; }
+	.dt-reslist-hide { display: none !important; }
+	.dt-reslist-show { display: block !important; }
+
+	table.dt-reslist .display-block { display: block!important; }
+}
+
+@media (min-width: 768px) {
+	table.dt-reslist .dt-reslist-none {
+		display: none;
+	}
+	table.dt-reslist .dt-reslist-show {
+	}
+	table.dt-reslist tr {
+		display: table-row;
+	}
+}
+
+.dt-reslist-label {
+  margin-right: .4em;
+  font-weight: normal;
+}
+
+table.dt-reslist .bold { font-weight: bold; }
+table.dt-reslist .left { text-align: left; }
+table.dt-reslist .center { text-align: center; }
+table.dt-reslist .right { text-align: right; }
+table.dt-reslist .nowrap { white-space: nowrap!important; }
+table.dt-reslist .wrapall { white-space: normal!important; word-break: break-all; overflow: visible; }

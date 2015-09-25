@@ -46,6 +46,7 @@ var ResponsiveList = function(settings, opts) {
 
 	this.dom = {
     table: null,
+    sortThead: null,
     sortSelect: null
   };
 
@@ -61,6 +62,7 @@ $.extend(ResponsiveList.prototype, {
 	{
     var self = this;
     var dt = this.s.dt;
+    var dtSettings = self.s.dt.settings()[0];
 
 		dt.settings()[0]._responsiveList = this;
 
@@ -75,11 +77,12 @@ $.extend(ResponsiveList.prototype, {
       })
     ;
 
-    var $thead = $('<thead class="dt-reslist-sort-select dt-reslist-none"><tr><th colspan="0"></th></tr></thead>');
-    $('th', $thead).eq(0).append(this.dom.sortSelect);
+    this.dom.sortThead = $('<thead class="dt-reslist-sort-select dt-reslist-none"><tr><th colspan="0"></th></tr></thead>');
+    $('th', this.dom.sortThead).eq(0).append(this.dom.sortSelect);
+//console.log(dtSettings, dtSettings.bSorted);
 
     $('thead.dt-reslist-sort-select', this.dom.table).remove();
-    this.dom.table.prepend($thead);
+    this.dom.table.prepend(this.dom.sortThead);
 
     self._initSortSelect();
     self._drawTable();
@@ -115,15 +118,14 @@ $.extend(ResponsiveList.prototype, {
     var dtSettings = self.s.dt.settings()[0];
     dtSettings._colTitles = [];
 
-    $('thead.dt-reslist-sort-select tr th', this.dom.table)
+    $('tr th', this.dom.sortThead)
       .attr('colspan', this.s.dt.columns().visible().length)
     ;
     this.dom.sortSelect.empty();
 
     this.s.dt.columns().every(function (i) {
       var col = this;
-      if (!col.visible()) return;
-
+      if (!col.visible() || $(col.header()).hasClass('sorting_disabled')) return;
       var label = $(col.header()).text();
       dtSettings._colTitles.push(label);
 
@@ -147,6 +149,10 @@ $.extend(ResponsiveList.prototype, {
     		)
     	;
     } );
+
+    if (dtSettings._colTitles.length < 1) {
+      this.dom.sortThead.hide();
+    }
   },
 
 	_drawTable: function ()

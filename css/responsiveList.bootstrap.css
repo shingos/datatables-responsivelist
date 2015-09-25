@@ -35,16 +35,21 @@
 	table.dt-reslist.table-bordered {
 		border: 0;
 	}
-	table.dt-reslist.table-bordered tr {
+
+	table.dt-reslist.table-bordered tbody tr,
+	table.dt-reslist.row-border tbody tr {
 		border-bottom-color: #ddd;
 		border-bottom-style: solid;
 		border-bottom-width: 1px;
 	}
-	table.dt-reslist.row-border tr {
-		border-bottom-color: #ddd;
-		border-bottom-style: solid;
-		border-bottom-width: 1px;
+
+	table.dt-reslist.table-bordered tbody tr:first-child,
+	table.dt-reslist.row-border tbody tr:first-child {
+		border-top-color: #ddd;
+		border-top-style: solid;
+		border-top-width: 1px;
 	}
+
 	table.dt-reslist.table-striped>tbody>tr:nth-child(odd) {
 		background-color: #f9f9f9;
 	}
@@ -55,9 +60,7 @@
 
 	table.dt-reslist.table-hover>tbody>tr:hover,
 	table.dt-reslist.table-hover>tbody>tr:hover>td,
-	table.dt-reslist.table-hover>tbody>tr:hover>th {
-		background-color: #f5f5f5;
-	}
+	table.dt-reslist.table-hover>tbody>tr:hover>th,
 	table.dt-reslist.table-hover>tbody>tr>td:hover,
 	table.dt-reslist.table-hover>tbody>tr>th:hover {
 		background-color: #f5f5f5;

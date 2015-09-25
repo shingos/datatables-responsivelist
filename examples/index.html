@@ -13,11 +13,24 @@
 		<script type="text/javascript" language="javascript" src="../js/dataTables.responsiveList.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready(function() {
+/*
 				var table = $('#example').DataTable();
 
 				new $.fn.dataTable.ResponsiveList(table, {
 					// options
 				});
+*/
+
+				$('#example').DataTable({
+					ordering: true,
+					order: [ [0, 'desc'] ],
+					columnDefs: [ {
+			      targets: 1,
+			      orderable: false
+			    } ],
+					responsiveList: true
+				} );
+
 			} );
 		</script>
 	</head>
